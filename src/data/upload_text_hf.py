@@ -3,6 +3,8 @@ from tqdm import tqdm
 import unicodedata
 import re
 from ftfy import fix_text
+from datasets import Dataset, DatasetDict
+import random
 
 def clean_text(text):
     text = unicodedata.normalize("NFKC", text)
@@ -21,10 +23,9 @@ def clean_text(text):
 
 base_path = "/datadrive/pavan/ContinualLearning/SkillData/data/age_0_5/questions/"
 text_types = ["conv", "story", "poem"]
-output_base_path = "/datadrive/pavan/CurLL/data/age_0_5/"
 
+texts = []
 for text_type in text_types:
-    output_path = output_base_path + f"{text_type}_" + "chat_format_neox.jsonl"
     file_path = base_path + f"{text_type}/" + "parsed.json"
     with open(file_path, "r") as f:
         l = json.load(f)
@@ -35,29 +36,37 @@ for text_type in text_types:
         tt = text_type
 
     for i in tqdm(range(len(l))):
-        conversation = {}
-        conversation["chat"] = []
+        conversation = ""
         for in_q,q in enumerate(l[i]["output"]["ir"]):
             if in_q == 0:
-                conversation["chat"].append({
-                    "role": "user",
-                    "content": f"Here is a {tt}:\n\n" + 
-                    clean_text(l[i]["content"]) + 
-                    f"\n\nAnswer some questions based on the context above:\n\n" + 
-                    clean_text(q["instruction"]) + "\n"
-                })
+                conversation = conversation + f"Here is a {tt}:\n\n{clean_text(l[i]["content"])}\n\nAnswer some questions based on the context above:\n\nQuestion: {clean_text(q["instruction"])}\n"
             else:
-                conversation["chat"].append({
-                    "role": "user",
-                    "content": clean_text(q["instruction"]) + "\n"
-                })
-            conversation["chat"].append({
-                "role": "assistant",
-                "content": clean_text(q["response"]) + "\n"
-            })
+                conversation = conversation + f"Question: {clean_text(q["instruction"])}\n"
+            conversation = conversation + f"Answer: {clean_text(q["response"])}\n\n"
+        texts.append(conversation)
 
-        with open(output_path, "a") as f:
-            f.write(json.dumps(conversation) + "\n")
 
-    print(f"Writing {text_type} to {output_path}")
+random.seed(42)
+random.shuffle(texts)
 
+n_total = len(texts)
+n_train = int(0.8 * n_total)
+n_val = int(0.1 * n_total)
+n_test = n_total - n_train - n_val
+
+train_texts = texts[:n_train]
+val_texts = texts[n_train:n_train + n_val]
+test_texts = texts[n_train + n_val:]
+
+# --- Create DatasetDict ---
+dataset = DatasetDict({
+    "train": Dataset.from_dict({"text": train_texts}),
+    "val": Dataset.from_dict({"text": val_texts}),
+    "test": Dataset.from_dict({"text": test_texts}),
+})
+
+# --- Push to Hugging Face ---
+dataset_name = "Pavankalyan/age_0_5_text"  # Replace with your info
+
+# Upload to the hub
+dataset.push_to_hub(dataset_name)
