@@ -1,1 +1,6 @@
 age_0_5
+checkpoints/
+logs/
+tb_logs/
+wandb/
+__pycache__/
