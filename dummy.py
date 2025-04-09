@@ -1,7 +1,7 @@
 from transformers import AutoTokenizer
 
 # Load tokenizer
-tokenizer = AutoTokenizer.from_pretrained("meta-llama/Meta-Llama-3-8B")
+tokenizer = AutoTokenizer.from_pretrained("HuggingFaceTB/SmolLM-360M")
 
 # Check and print EOS token
 if tokenizer.eos_token:

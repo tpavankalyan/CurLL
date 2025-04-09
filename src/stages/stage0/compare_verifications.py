@@ -8,8 +8,8 @@ def load_jsonl_to_df(file_path):
     return pd.DataFrame(data)
 
 # Load both files
-df1 = load_jsonl_to_df('/datadrive/pavan/az_storage/data_unorganized/age_0_5/texts/poem/random_5000_verified_gemma.json')
-df2 = load_jsonl_to_df('/datadrive/pavan/az_storage/data_unorganized/age_0_5/texts/poem/random_5000_verified_gpt4_5.json')
+df1 = load_jsonl_to_df('/datadrive/pavan/az_storage/data_unorganized/age_0_5/questions/poem/random_5000_verified_gemma.json')
+df2 = load_jsonl_to_df('/datadrive/pavan/az_storage/data_unorganized/age_0_5/questions/poem/random_5000_verified_gpt4_5.json')
 
 # Keep only entries where 'response' is a dict in both files
 df1_valid = df1[df1['response'].apply(lambda x: isinstance(x, dict))].copy()
@@ -23,7 +23,8 @@ df2_valid = df2_valid[df2_valid['index_num'].isin(valid_indices)]
 
 # Flatten response ratings
 def flatten_response(df, suffix):
-    response_fields = ['rhythm_and_flow', 'relevance_to_topic', 'skill_reinforcement', 'age_appropriateness', 'overall_quality']
+    #response_fields = ['rhythm_and_flow', 'relevance_to_topic', 'skill_reinforcement', 'age_appropriateness', 'overall_quality']
+    response_fields = ['skill_alignment', 'ambiguity', 'content_relevance', 'open_endedness', 'age_appropriateness', 'readability', 'skill_coverage', 'response_quality', 'poetic_context_integration', 'overall_quality']
     for field in response_fields:
         df[f'{field}_rating_{suffix}'] = df['response'].apply(lambda x: float(x[field]['rating']))
     return df[['index_num'] + [f'{field}_rating_{suffix}' for field in response_fields]]
