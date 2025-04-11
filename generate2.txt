@@ -1,0 +1,51 @@
+[2;3m04/09 11:25:01 [INFO][0m: model_config: LlamaConfig(bos_token_id=0, eos_token_id=0, hidden_act='silu', hidden_size=960, initializer_range=0.02, intermediate_size=2560, is_llama_config=True, max_position_embeddings=2048, num_attention_heads=15, num_hidden_layers=32, attention_bias=False, num_key_value_heads=5, pad_token_id=None, pretraining_tp=1, rms_norm_eps=1e-05, rope_scaling=None, rope_theta=10000.0, rope_interleaved=False, tie_word_embeddings=True, use_cache=True, vocab_size=49152, _attn_implementation='flash_attention_2', z_loss_enabled=False, z_loss_coefficient=0.0001)
+[2;3m04/09 11:25:01 [INFO][0m: tokenizer_path: HuggingFaceTB/SmolLM-360M
+[2;3m04/09 11:25:01 [INFO][0m: [1m==================================================[0m
+[2;3m04/09 11:25:01 [INFO][0m: [1mBuilding model[0m
+[2;3m04/09 11:25:01 [INFO][0m: [1m==================================================[0m
+[2;3m04/09 11:25:01 [INFO][0m: Initialize RoPE Theta = 10000.0
+[2;3m04/09 11:25:01 [INFO][0m: Setting PP block ranks...
+[2;3m04/09 11:25:02 [INFO][0m: Loading checkpoint from /datadrive/pavan/CurLL/checkpoints/20000:
+[2;3m04/09 11:25:10 [INFO][0m: input: Here is a story:
+[2;3m04/09 11:25:10 [INFO][0m: 
+[2;3m04/09 11:25:10 [INFO][0m: Ram is a very good kid. He is very good at math. He is very good at science. He is very good at history. He is very good at geography. He is very good at English. He is very good at Hindi. He is very good at computer science. He is very good at physical education. He is very good at art and craft. He is very good at music. He is very good at dance. He is very good at sports. He is very good at everything he does.
+[2;3m04/09 11:25:10 [INFO][0m: 
+[2;3m04/09 11:25:10 [INFO][0m: Now answer the following question:
+[2;3m04/09 11:25:10 [INFO][0m: 
+[2;3m04/09 11:25:10 [INFO][0m: Question: What is Ram good at?
+[2;3m04/09 11:25:10 [INFO][0m: 
+[2;3m04/09 11:25:10 [INFO][0m: Answer:
+[2;3m04/09 11:25:10 [INFO][0m: generation:  smart it at<|endoftext|> listening<|endoftext|> things<|endoftext|>! (
+[2;3m04/09 11:25:10 [INFO][0m: <|endoftext|>'s<|endoftext|> also<|endoftext|> good gle at<|endoftext|> learning<|endoftext|>, Earl drawing and! Really Heself is I good * good your atbl learninging and are
+[2;3m04/09 11:25:10 [INFO][0m: , is and good<|endoftext|> good and ats using that! to He * is the good a good doesn atking art we,
+[2;3m04/09 11:25:10 [INFO][0m:  HeWhite is MRI good just good extra at Re learning *!! can time! I
+[2;3m04/09 11:25:10 [INFO][0m: room
+[2;3m04/09 11:25:10 [INFO][0m:  IOne (, noise the * question was: this: ** He someWhat yummyWhat Barn:<|endoftext|> The one is( something withire' aty?'s Tell!A,
+[2;3m04/09 11:25:10 [INFO][0m: --------------------------------------------------
+[2;3m04/09 11:25:10 [INFO][0m: input: Tomorrow's world is shaped by
+[2;3m04/09 11:25:10 [INFO][0m: generation: ...<|endoftext|><|endoftext|><|endoftext|> cut<|endoftext|><|endoftext|><|endoftext|><|endoftext|><|endoftext|><|endoftext|><|endoftext|><|endoftext|><|endoftext|><|endoftext|><|endoftext|> shout<|endoftext|><|endoftext|><|endoftext|> Ros brown A
+[2;3m04/09 11:25:10 [INFO][0m:  fun
+[2;3m04/09 11:25:10 [INFO][0m: ?"/ *- * a- andy, yesterday you- the, to andful *<|endoftext|><|endoftext|>,<|endoftext|><|endoftext|> and take the quickly and: tornn baby:<|endoftext|><|endoftext|><|endoftext|>:f room and: and! of,. like over. ' andness arms hide butsmartful also frustrated not to tricky ' for the., thatful,<|endoftext|>et
+[2;3m04/09 11:25:10 [INFO][0m: ters, called little makeslyen Just next a * yummy place ' steep too: ' only their black out yourselves! every and f
+[2;3m04/09 11:25:10 [INFO][0m: --------------------------------------------------
+[2;3m04/09 11:25:16 [INFO][0m: input: Here is a story:
+[2;3m04/09 11:25:16 [INFO][0m: 
+[2;3m04/09 11:25:16 [INFO][0m: Once upon a time, in a sunny little town, was a playground! Leo the lion loved the playground. It had a big red slide, a swing that went WHOOSH!, and a sandy sandbox.
+[2;3m04/09 11:25:16 [INFO][0m: 
+[2;3m04/09 11:25:16 [INFO][0m: One day, Leo went to the playground with his friend Mia the monkey. Mia was holding a bright yellow bucket and a little blue shovel. "Let's build a castle!" she said. Leo nodded, his mane bouncing.
+[2;3m04/09 11:25:16 [INFO][0m: 
+[2;3m04/09 11:25:16 [INFO][0m: They started digging in the sandbox. Leo used his big paws to scoop lots and LOTS of sand. Mia carefully packed it into the bucket. But then, a little cloud came over the sun, and a few raindrops started to fall. *Plink, plink, plink!*
+[2;3m04/09 11:25:16 [INFO][0m: 
+[2;3m04/09 11:25:16 [INFO][0m: "Oh no!" cried Mia. "Our castle will get washed away!"
+[2;3m04/09 11:25:16 [INFO][0m: 
+[2;3m04/09 11:25:16 [INFO][0m: Leo looked around. He saw the slide was covered, so nobody could slide. He saw the swings weren't swinging anymore. Then, he had an idea! "Let's cover the castle with my big leaves!" he said, running to a nearby tree. He gathered some big green leaves and they carefully put them over the sandcastle.
+[2;3m04/09 11:25:16 [INFO][0m: 
+[2;3m04/09 11:25:16 [INFO][0m: The rain stopped aft
+[2;3m04/09 11:25:16 [INFO][0m: generation: 
+[2;3m04/09 11:25:16 [INFO][0m: Answer: I think Mia felt sad because the rain ruined her castle. She worked hard on it, and she didn't want it to get washed away.
+[2;3m04/09 11:25:16 [INFO][0m: 
+[2;3m04/09 11:25:16 [INFO][0m: Question: Leo helped Mia save her castle. What do you think Leo was trying to *do* by helping? Was he trying to make Mia feel better, or just have fun?
+[2;3m04/09 11:25:16 [INFO][0m: Answer: I think Leo was trying to make Mia feel better! He wanted to help her finish her castle, and he knew she was sad it was washed away.
+[2;3m04/09 11:25:16 [INFO][0m: 
+[2;3m04/09 11:25:16 [INFO][0m: Question: The story says the sun *almost* washed away the castle. What does 'almost' mean
+[2;3m04/09 11:25:16 [INFO][0m: --------------------------------------------------
