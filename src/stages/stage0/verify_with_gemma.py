@@ -17,6 +17,7 @@ def load_jsonl(file_path):
     with open(file_path, "r") as f:
         return [json.loads(line.strip()) for line in f if line.strip()]
 
+
 def _process_story(seed, new_seed):
     output = seed["output"]
     if isinstance(output, dict):
@@ -97,7 +98,7 @@ def get_seed_data(pre_seed_data, text_type, qa=False):
 
 def generate_texts(text_type, batch_size=1024, qa=False):
     login(token='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')
-    prompts_path = "/datadrive/pavan/ContinualLearning/SkillData/metadata/prompts_gpt4_5.json"
+    prompts_path = "/datadrive/pavan/ContinualLearning/SkillData/data/age_0_5/metadata/prompts_gpt4_5.json"
     if qa:
         format_type = "questions"
     else:
