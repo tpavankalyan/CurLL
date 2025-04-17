@@ -4,3 +4,5 @@ logs/
 tb_logs/
 wandb/
 __pycache__/
+/data/
+!src/data/
