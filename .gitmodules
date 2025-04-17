@@ -1,3 +1,6 @@
 [submodule "nanotron"]
 	path = nanotron
 	url = git@github.com:tpavankalyan/nanotron.git
+[submodule "vllm"]
+	path = vllm
+	url = https://github.com/vllm-project/vllm.git
