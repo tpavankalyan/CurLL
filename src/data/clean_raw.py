@@ -77,13 +77,16 @@ def extract_key_values(s, keys):
             entry[key] = value.strip("```").strip("\n").strip("}").strip("\n")
         else:
             entry[key] = s
-            print(s)
-            print("-----------------------------------------------")
+            # print(s)
+            # print("-----------------------------------------------")
     return entry
 
-def fix_text(bad_list):
+def fix_text(bad_list, prompt_path):
+    with open(prompt_path, "r") as f:
+        prompt = json.load(f)
+    output_format = extract_json_from_string(prompt['user'])
     for i in range(len(bad_list)):
-        bad_list[i]['output'] = extract_key_values(bad_list[i]['output'], ["expanded_topic", "generated_text"])
+        bad_list[i]['output'] = extract_key_values(bad_list[i]['output'], list(output_format.keys()))
     return bad_list
 
 def fix_keys(bad_list):
@@ -115,22 +118,31 @@ def clean_text(text):
 
 def clean_text_list(text_list):
     for i in tqdm(range(len(text_list))):
-        text_list[i]['output']['generated_text'] = clean_text(text_list[i]['output']['generated_text'])
-        text_list[i]['output']['expanded_topic'] = clean_text(text_list[i]['output']['expanded_topic'])
+        for k in text_list[i]['output'].keys():
+            if isinstance(text_list[i]['output'][k], str):
+                text_list[i]['output'][k] = clean_text(text_list[i]['output'][k])
     return text_list
 
-def hf_format(data_list):
-    for i in range(len(data_list)):
-        data_list[i]['topic'] = data_list[i]['output']['expanded_topic']
-        data_list[i]['output'] = data_list[i]['output']['generated_text']
-        data_list[i]['POS'] = data_list[i]['word_list'][1]
-        data_list[i]['word_list'] = data_list[i]['word_list'][0]
+def hf_format(data_list, text_type="context"):
+    if text_type=="context":
+        for i in range(len(data_list)):
+            data_list[i]['topic'] = data_list[i]['output']['expanded_topic']
+            data_list[i]['output'] = data_list[i]['output']['generated_text']
+            data_list[i]['POS'] = data_list[i]['word_list'][1]
+            data_list[i]['word_list'] = data_list[i]['word_list'][0]
+    elif text_type=="instruct":
+        for i in range(len(data_list)):
+            data_list[i]['instruction'] = data_list[i]['output']['instruction']
+            data_list[i]['response'] = data_list[i]['output']['response']
+            data_list[i]['POS'] = data_list[i]['word_list'][1]
+            data_list[i]['word_list'] = data_list[i]['word_list'][0]
     return data_list
 
-stage = 0
-metadata_path = f"/datadrive/pavan/az_storage/data_unorganized/stages/stage{stage}/seed/context/metadata_chunks.jsonl"
-prompt_path = f"/datadrive/pavan/az_storage/data_unorganized/stages/stage{stage}/seed/context/prompt.json"
-save_path = f"/datadrive/pavan/az_storage/data_unorganized/stages/stage{stage}/raw/context/all_data.jsonl"
+stage = 1
+text_type = "instruct"  # or "context"
+metadata_path = f"/datadrive/pavan/az_storage/data_unorganized/stages/stage{stage}/seed/{text_type}/metadata_chunks.jsonl"
+prompt_path = f"/datadrive/pavan/az_storage/data_unorganized/stages/stage{stage}/seed/{text_type}/prompt_v1.json"
+save_path = f"/datadrive/pavan/az_storage/data_unorganized/stages/stage{stage}/raw/{text_type}/all_data.jsonl"
 
 data = load_data(metadata_path)
 print("Total number of text snippets: ", len(data))
@@ -143,7 +155,7 @@ g1, b1 = check_json_struct(g0, prompt_path)
 
 print("Total number of bad samples: ", len(b0))
 
-b0_fixed = fix_text(b0)
+b0_fixed = fix_text(b0, prompt_path)
 
 b1_fixed = fix_keys(b1)
 
@@ -165,9 +177,9 @@ with open(save_path, "w") as f:
 #upload to huggingface
 from datasets import DatasetDict, Dataset
 dataset = DatasetDict()
-cleaned_samples = hf_format(cleaned_samples)
+cleaned_samples = hf_format(cleaned_samples, text_type="instruct")
 dataset['train'] = Dataset.from_list(cleaned_samples)
-dataset_name = f"Pavankalyan/stage{stage}_context_cleaned"  # Replace with your info
+dataset_name = f"Pavankalyan/stage{stage}_instruct_cleaned"  # Replace with your info
 dataset.push_to_hub(dataset_name)
 print("Dataset uploaded to Hugging Face.")
 
