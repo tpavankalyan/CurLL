@@ -1,27 +1,37 @@
-#load a huggingface dataset
-from datasets import load_dataset
-from tqdm import tqdm
+from datasets import load_dataset, DatasetDict, Dataset, concatenate_datasets
 
-ds = load_dataset("roneneldan/TinyStoriesInstruct")
+# Load all datasets
+# d0 = load_dataset("Pavankalyan/stage0_context_cleaned")["train"]
+d1 = load_dataset("Pavankalyan/stage1_context_cleaned")["train"]
+# i0 = load_dataset("Pavankalyan/stage0_instruct_cleaned")["train"]
+i1 = load_dataset("Pavankalyan/stage1_instruct_cleaned")["train"]
 
-train_samples = [[]]
+# Token formatting functions
+def add_ins_chat_tokens(example):
+    return {
+        "text": f"<|user|>\n{example['instruction']}\n<|assistant|>\n{example['response']}"
+    }
 
-for i in tqdm(range(len(ds['train']))):
-    train_samples[-1].extend(ds['train'][i]['text'])
-    if ds['train'][i]['text'] == '<|endoftext|>' or ds['train'][i]['text'].endswith('<|endoftext|>'):
-        train_samples.append([])
+def add_con_chat_tokens(example):
+    return {
+        "text": f"<|user|>\n{example['output']}"
+    }
 
-print(len(train_samples))
-print(train_samples[0])
+# Apply the formatting
+# d0 = d0.map(add_con_chat_tokens, remove_columns=d0.column_names)
+d1 = d1.map(add_con_chat_tokens, remove_columns=d1.column_names)
+# i0 = i0.map(add_ins_chat_tokens, remove_columns=i0.column_names)
+i1 = i1.map(add_ins_chat_tokens, remove_columns=i1.column_names)
 
-#save the list
-import json
-with open('train_samples.json', 'w') as f:
-    json.dump(train_samples, f)
+# Combine all into a single dataset
+# combined_dataset = concatenate_datasets([d0, d1, i0, i1])
+# combined_dataset = concatenate_datasets([d0, i0])
+combined_dataset = concatenate_datasets([d1, i1])
 
 
-# import json
+dataset = DatasetDict({"train": combined_dataset})
 
-# with open('train_samples.json', 'r') as f:
-#     train_samples = json.load(f)
-# print(len(train_samples))
+# Push to the Hugging Face Hub
+dataset_name = "Pavankalyan/stages_1_mix"
+dataset.push_to_hub(dataset_name)
+print("Dataset uploaded to Hugging Face.")
