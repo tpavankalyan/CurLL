@@ -132,22 +132,26 @@ def main(stage):
 
     indicators = df['id'].unique().tolist()
 
-    with Pool(min(cpu_count(), 50)) as pool:
-        worker = partial(process_indicator, df=df)
-        all_results = list(tqdm(pool.imap(worker, indicators), total=len(indicators)))
+    for indicator in tqdm(indicators):
+
+    # with Pool(min(cpu_count(), 50)) as pool:
+    #     worker = partial(process_indicator, df=df)
+        # all_results = list(tqdm(pool.imap(worker, indicators), total=len(indicators)))
+        result_list = process_indicator(indicator, df)
         
         # Flatten results and apply splits
-        for result_list in tqdm(all_results):
-            if result_list:
-                for result in result_list:
-                    split_type, indicator_id, topic, instructions, responses_s = result
-                    df.loc[
-                        (df['id'] == indicator_id) &
-                        (df['context_template'] == topic) &
-                        (df['instruction'].isin(instructions)) &
-                        (df['response'].isin(responses_s)),
-                        'split'
-                    ] = split_type
+        # for result_list in tqdm(all_results):
+        if result_list:
+            for result in result_list:
+                split_type, indicator_id, topic, instructions, responses_s = result
+                df.loc[
+                    (df['id'] == indicator_id) &
+                    (df['context_template'] == topic) &
+                    (df['instruction'].isin(instructions)) &
+                    (df['response'].isin(responses_s)),
+                    'split'
+                ] = split_type
+                print(df['split'].value_counts())
 
     print(df['split'].value_counts())
     # df.to_csv(f"stage{stage}_split.csv", index=False)
