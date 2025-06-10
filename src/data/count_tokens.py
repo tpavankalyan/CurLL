@@ -3,7 +3,7 @@ from transformers import AutoTokenizer
 from transformers import AutoModelForCausalLM
 
 # Load the dataset and tokenizer
-dataset = load_dataset("Pavankalyan/stages_0_mix", split="train")
+dataset = load_dataset("Pavankalyan/stage0_context_cleaned", split="train")
 # tokenizer = AutoTokenizer.from_pretrained("roneneldan/TinyStories-33M")
 tokenizer = AutoTokenizer.from_pretrained("Pavankalyan/TinyStoriesInstruct-tokenizer")
 
@@ -20,7 +20,8 @@ for token_name, token in tokenizer.special_tokens_map.items():
 
 # Tokenize and count tokens
 def count_tokens(batch):
-    tokens = tokenizer(batch["text"], return_attention_mask=False, return_token_type_ids=False)
+    texts = [text + "<|endoftext|>" for text in batch["output"]]
+    tokens = tokenizer(texts, return_attention_mask=False, return_token_type_ids=False)
     return {"num_tokens": [len(input_ids) for input_ids in tokens["input_ids"]]}
 
 # Apply token counting
